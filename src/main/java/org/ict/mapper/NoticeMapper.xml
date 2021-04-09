@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.ict.mapper.NoticeMapper">
+
+	<select id = "getNoticeList" resultType="org.ict.domain.NoticeVO">
+		SELECT nno, btitle, bwriter, bwrite_date 
+		FROM board WHERE bno > 0
+	</select>
+	
+	<delete id="delete">
+		DELETE FROM notice WHERE nno = #{nno}
+	</delete>	
+	
+	<update id="update">
+		UPDATE notice SET
+		ntitle = #{ntitle},
+		ncontent = #{ncontent},
+		WHERE nno = #{nno}
+	</update>
+	
+	<insert id="insert">
+		INSERT INTO notice (ntitle, ncontent, mno, fno)
+		VALUES (
+		#{ntitle},
+		#{ncontent},
+		#{mno},
+		#{fno}
+		)
+	</insert>
+	
+	<select id = "getNoticeRead" resultType="org.ict.domain.NoticeVO">
+		SELECT nno, ntitle, ncontent, nwrite_date, mname, fname, deptname FROM notice
+		INNER JOIN member ON notice.mno = member.mno
+		INNER JOIN form ON notice.fno = form.fno
+		INNER JOIN dept ON dept.deptno = member.deptno
+		WHERE nno = #{nno}
+	</select>
+	<select id="listPage" resultType="org.ict.domain.NoticeVO">
+	<![CDATA[
+		SELECT nno, deptname, ntitle, mname, nwrite_date FROM notice
+		INNER JOIN member ON notice.mno = member.mno
+		INNER JOIN form ON notice.fno = form.fno
+		INNER JOIN dept ON member.deptno = dept.deptno
+		WHERE nno > 0
+	]]>				
+	<include refid="search"></include>
+	<![CDATA[
+		ORDER BY nno DESC
+		limit #{pageStart}, #{number}
+	]]>	
+	</select>
+	
+	<select id="countPageNum" resultType="int">
+	<![CDATA[
+		SELECT COUNT(nno) FROM notice
+		INNER JOIN member ON notice.mno = member.mno
+		INNER JOIN form ON notice.fno = form.fno
+		INNER JOIN dept ON member.deptno = dept.deptno
+		WHERE nno > 0
+	]]>
+	<include refid="search"></include>
+	</select>
+	<select id="getFormList" resultType="org.ict.domain.FormVO">
+		SELECT fno, fname FROM form
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and (ntitle like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and (ncontent like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'w'.toString()">
+				and (mname like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'tc'.toString()">
+				and (ntitle like CONCAT('%', #{keyword}, '%')
+						OR
+					 ncontent like CONCAT('%', #{keyword}, '%')
+					)
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				and (ncontent like CONCAT('%', #{keyword}, '%')
+						OR
+					 mname like CONCAT('%', #{keyword}, '%')
+					)
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				and (ntitle like CONCAT('%', #{keyword}, '%')
+						OR
+					 ncontent like CONCAT('%', #{keyword}, '%')
+					 	OR
+					 mname like CONCAT('%', #{keyword}, '%')
+					)
+			</if>
+		</if>
+	</sql>
+</mapper>

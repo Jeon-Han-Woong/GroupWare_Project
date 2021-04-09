@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.HomeMapper">
+	
+	<select id="noticeTopThree" resultType="org.ict.domain.NoticeVO">
+		SELECT a.nno, b.fname, a.ntitle, c.mname, a.nwrite_date
+		FROM notice a, form b, member c
+		WHERE a.fno = b.fno and a.mno = c.mno
+		ORDER BY a.nno DESC
+		LIMIT 0, 3
+	</select>
+
+	<select id="noSignBoard" resultType="org.ict.domain.BoardVO">
+		SELECT a.bno, c.mno, b.fname, a.btitle, a.bwrite_date, a.signstate
+		FROM board a, form b, member c
+		WHERE a.fno = b.fno and a.mno = c.mno and a.signstate = 2 and c.mno = #{mno}
+		ORDER BY a.bno DESC
+		LIMIT 0, 3
+	</select>
+	
+</mapper>

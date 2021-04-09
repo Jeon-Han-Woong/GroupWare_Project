@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.ict.mapper.SignMapper">
+	
+	<sql id = "searchSign">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and btitle like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and bcontent like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'w'.toString()">
+				and mname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				and (mname like CONCAT('%', #{keyword}, '%')
+					OR bcontent like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				and (mname like CONCAT('%', #{keyword}, '%')
+					OR bcontent like CONCAT('%', #{keyword}, '%')
+					OR btitle like CONCAT('%', #{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	<sql id = "searchNotice">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and ntitle like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and ncontent like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'w'.toString()">
+				and mname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'cw'.toString()">
+				and (mname like CONCAT('%', #{keyword}, '%')
+					OR ncontent like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'tcw'.toString()">
+				and (mname like CONCAT('%', #{keyword}, '%')
+					OR ncontent like CONCAT('%', #{keyword}, '%')
+					OR ntitle like CONCAT('%', #{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	
+	<!-- 문서결재 start -->
+	
+	<select id = "signStateListA" resultType="org.ict.domain.BoardVO">
+		<![CDATA[
+			SELECT bno, btitle, mname, bcontent, bwrite_date, bsigner, signstate, bsign_date, deptname, b.mno
+			FROM board a
+			JOIN member b ON b.mno = a.mno
+            JOIN dept c ON b.deptno = c.deptno
+			WHERE signstate < 2
+		]]>
+		
+		<include refid="searchSign"></include>
+		
+		<![CDATA[
+			ORDER BY bno DESC        
+         	limit #{pageStart}, #{number}
+        ]]>
+ 	</select>
+ 	
+	<select id = "signStateListB" resultType="org.ict.domain.BoardVO">
+			<![CDATA[
+				SELECT bno, btitle, mname, bcontent, bwrite_date, bsigner, signstate, bsign_date, deptname, b.mno
+				FROM board a
+				JOIN member b ON b.mno = a.mno
+	            JOIN dept c ON b.deptno = c.deptno
+				WHERE signstate = 2
+			]]>
+			
+			<include refid="searchSign"></include>
+			
+			<![CDATA[
+				ORDER BY bno DESC
+				limit #{pageStart}, #{number}
+			]]>
+	</select>
+	
+	
+	
+	<select id = "reportRead" resultType="org.ict.domain.BoardVO">
+		
+		Select c.bno, c.btitle, a.mname, a.mno, c.bcontent, b.fname, d.deptname
+			, c.bwrite_date, c.bsigner, c.signstate, c.bsign_date
+			from member a, form b, board c, dept d
+			where a.mno = c.mno and b.fno = c.fno and bno = #{bno} and d.deptno = a.deptno
+	</select>
+	
+	<insert id="reportWrite">
+		insert into board (fno, btitle, bcontent, mno)
+		values(#{fno}, #{btitle}, #{bcontent}, #{mno});
+	</insert>
+	
+	<select id="countPageNum" resultType="int"><!-- 결재보류 countPage  -->
+		SELECT count(bno) from board 
+		where 
+		signstate > 0; 
+	</select>
+	
+	<select id="countPageNum0" resultType="int"><!-- 결재완료 countPage  -->
+		SELECT count(bno) from board 
+		where 
+		signstate = 2; 
+	</select>
+	
+	<select id="deptSelect" resultType="org.ict.domain.DeptVO">
+		select deptname from dept;
+	</select>
+	
+	<!-- 문서결재 end -->
+	
+	
+	
+	<select id = "signSuccess">
+	
+		UPDATE board SET bsigner = #{bsigner}, signstate = #{signstate}, bsign_date = now()
+		WHERE bno = #{bno}
+	 
+	</select>
+	<update id = "reportModify">
+		
+		UPDATE board set btitle = #{btitle}, bcontent = #{bcontent}
+		WHERE bno = #{bno}
+	
+	</update>
+	<select id = "reportModifyForm" resultType="org.ict.domain.BoardVO">
+		select c.bno, c.btitle, a.mname, c.bcontent, b.fname
+				, c.bwrite_date, c.bsigner, c.signstate, c.bsign_date, d.deptname
+				from member a, form b, board c, dept d
+				where a.mno = c.mno and b.fno = c.fno and a.deptno = d.deptno and bno = #{bno}
+	</select>
+	<delete id="reportDelete">
+		DELETE from board
+		where bno = #{bno}
+	</delete>
+	
+	<select id="getForm" resultType="org.ict.domain.FormVO">
+		SELECT fno, fname
+		FROM form
+		WHERE state = true
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

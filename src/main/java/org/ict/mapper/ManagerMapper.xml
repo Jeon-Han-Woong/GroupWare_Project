@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.ManagerMapper">
+
+	<insert id="insertMember">
+		INSERT INTO Member (mname, mpwd, memail, hiredate, deptno, position, mpnum, maddress, mbirth, gender, military, marry, vacachk, vacarem)
+		VALUES (#{mname}, #{mpwd}, #{memail}, #{hiredate}, #{deptno}, #{position}, #{mpnum}, #{maddress}, #{mbirth}, #{gender}, #{military}, #{marry}, #{vacachk}, #{vacarem})
+	</insert>
+	
+	<select id="memberList" resultType="org.ict.domain.MemberVO">
+		SELECT a.mno, a.mname, a.mpnum, a.memail, b.deptname, a.position, a.mbirth, a.vacachk, a.vacarem, a.state
+		FROM Member a, Dept b
+		WHERE a.mno > 0 and a.deptno = b.deptno
+		ORDER BY mno
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null and keyword != null">
+			<if test="searchType == 'name'.toString()">
+				and mname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'dept'.toString()">
+				and deptname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'position'.toString()">
+				and position like CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</sql>
+	
+	<select id="memberListPage" resultType="org.ict.domain.MemberVO">
+		<![CDATA[
+			SELECT a.mno, a.mname, a.mpnum, a.memail, b.deptname, a.position, a.mbirth, a.vacachk, a.vacarem, a.state
+			FROM Member a, Dept b
+			WHERE a.mno > 0 and a.deptno = b.deptno	and a.state = true	
+		]]>
+			<include refid="search"></include>
+		
+		<![CDATA[
+			ORDER BY mno
+			limit #{pageStart} , #{number}		
+		]]>
+	</select>
+	
+	<select id="memberCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(mno) FROM Member a, Dept b Where mno > 0 and a.deptno = b.deptno and a.state = true
+		]]>
+			<include refid="search"></include>
+	</select>
+	
+	<select id="deptSelect" resultType="org.ict.domain.DeptVO">
+		SELECT b.deptno, b.deptname, count(mno) countmem
+		FROM Member a right join Dept b
+		on b.deptno = a.deptno
+		and a.state = true
+		Group By b.deptno
+        order by b.deptno
+		
+	</select>
+	
+	<select id="memberGet" resultType="org.ict.domain.MemberVO">
+		SELECT a.mno, a.mname, a.mpwd, a.mpnum, a.memail, a.hiredate, b.deptno, b.deptname, a.position, a.mpnum, a.maddress, a.mbirth, a.gender, a.military, a.marry, a.vacachk, a.vacarem
+		FROM Member a, Dept b
+		WHERE a.mno = #{mno} and a.deptno = b.deptno and a.state = true	
+	</select>
+	
+	<update id="memberUpdate">
+		UPDATE Member
+		SET mname = #{mname}, mpwd = #{mpwd}, memail = #{memail}, hiredate = #{hiredate}, deptno = #{deptno}, position = #{position}, mpnum = #{mpnum}, maddress = #{maddress}, mbirth = #{mbirth}, gender = #{gender}, military = #{military}, marry = #{marry}, vacachk = #{vacachk}, vacarem = #{vacarem}
+		WHERE mno = #{mno}
+	</update>
+	
+	<update id="memberDelete">
+		UPDATE Member SET state = false
+		where mno = #{mno}
+	</update>
+	
+	<select id="deptMemberList" resultType="org.ict.domain.MemberVO">
+		<![CDATA[
+		
+			SELECT a.mno, a.mname, a.position, b.deptno, b.deptname
+			FROM Member a, Dept b
+			WHERE a.deptno = b.deptno and a.state = true
+		]]>
+			<if test="deptoption != null">
+					and a.deptno = #{deptoption}
+			</if>
+		
+		<![CDATA[
+			ORDER BY a.mno
+			limit #{pageStart} , #{number}	
+		]]>
+	</select>
+	
+	<select id="deptMemberCount" resultType="int">
+		<![CDATA[
+			SELECT COUNT(mno)
+			FROM Member a, Dept b
+			Where mno > 0 and a.deptno = b.deptno and a.state = true
+		]]>
+			<if test="deptoption != null">
+					and a.deptno = #{deptoption}
+			</if>
+	</select>
+	
+	<select id="searchDeptName" resultType="String">
+		<![CDATA[
+		
+			SELECT distinct b.deptname
+			FROM Member a, Dept b
+			WHERE a.deptno = b.deptno and a.state = true
+		]]>
+			<if test="deptoption != null">
+					and a.deptno = #{deptoption}
+			</if>
+	</select>
+	
+	<insert id="insertDept">
+		INSERT INTO Dept (deptname) VALUES (#{deptname}) 
+	</insert>
+	
+	<update id="updateDept">
+		UPDATE Dept 
+		SET deptname = #{deptname}
+		WHERE deptno = #{deptno}
+	</update>
+	
+	<update id="resetDeptMember">
+		UPDATE Member
+		SET deptno = 1000
+		WHERE deptno = #{deptno}
+	</update>
+	
+	<delete id="deleteDept">
+		DELETE FROM Dept
+		WHERE deptno = #{deptno}
+	</delete>
+	
+	<update id="updateDeptMember">
+		UPDATE Member
+		SET deptno = #{deptno}
+		WHERE mno = #{mno}
+	</update>
+	
+</mapper>

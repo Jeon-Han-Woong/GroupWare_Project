@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.ProfileRestMapper">
+	
+	<select id="getMyInfo" resultType="org.ict.domain.MemberVO">
+		SELECT memail, mpnum, maddress, gender, military, marry, vacachk
+		FROM Member
+		WHERE mno = #{mno} 
+	</select>
+	
+	<select id="verifyPwd" resultType="String">
+		SELECT mpwd
+		FROM Member
+		WHERE mno = #{mno}
+	</select>
+	
+	<update id="updateInfo">
+		UPDATE member 
+		SET mpwd = #{mpwd}, memail = #{memail}, mpnum = #{mpnum}, maddress = #{maddress}, gender = #{gender}, military = #{military}, marry = #{marry}, vacachk = #{vacachk}
+		WHERE mno = #{mno}
+	</update>
+	
+	
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.MessageMapper">
+	
+	<sql id="searchMsg">
+		<if test="search.searchType != null">
+			<if test="search.searchType == 'n'.toString()">
+				and b.mname like CONCAT('%', #{search.keyword}, '%')
+			</if>
+			<if test="search.searchType == 't'.toString()">
+				and a.msgtitle like CONCAT('%', #{search.keyword}, '%')
+			</if>
+		</if>
+	</sql>
+	
+	<select id="takeMessageList" resultType="org.ict.domain.MessageVO">
+		SELECT a.msgno, b.mname, a.msgtitle, a.msgcontent, a.readchk, a.senddate
+		FROM Message a, Member b
+		WHERE a.takemno = #{mno} and a.sendmno = b.mno and existtake = true
+		ORDER BY a.msgno DESC
+		limit #{cri.pageStart}, #{cri.number}
+	</select>
+	
+	<select id="takeMsgCount" resultType="int">
+		SELECT count(msgno)
+		FROM Message a
+		Where a.takemno = #{mno} and existtake = true
+	</select>
+	
+	<select id="takeMessageListSearch" resultType="org.ict.domain.MessageVO">
+		<![CDATA[ SELECT a.msgno, b.mname, a.msgtitle, a.msgcontent, a.readchk, a.senddate
+		FROM Message a, Member b
+		WHERE a.takemno = #{mno} and a.sendmno = b.mno and existtake = true
+		]]>
+		<include refid="searchMsg"></include>
+		<![CDATA[
+		ORDER BY a.msgno DESC
+		limit #{cri.pageStart}, #{cri.number}
+		]]>
+	</select>
+	
+	<select id="takeMsgCountSearch" resultType="int">
+		SELECT count(msgno)
+		FROM Message a, Member b
+		Where a.takemno = #{mno} and a.sendmno = b.mno and existtake = true
+		<include refid="searchMsg"></include>
+	</select>
+	
+	<select id="sendMessageList" resultType="org.ict.domain.MessageVO">
+		SELECT a.msgno, b.mname, a.msgtitle, a.msgcontent, a.readchk, a.senddate
+		FROM Message a, Member b
+		WHERE a.sendmno = #{mno} and a.takemno = b.mno and existsend = true
+		ORDER BY a.msgno DESC
+		limit #{cri.pageStart}, #{cri.number}
+	</select>
+	
+	<select id="sendMsgCount" resultType="int">
+		SELECT count(msgno)
+		FROM Message a
+		Where a.sendmno = #{mno} and existsend = true
+	</select>
+	
+	<select id="sendMessageListSearch" resultType="org.ict.domain.MessageVO">
+		<![CDATA[ SELECT a.msgno, b.mname, a.msgtitle, a.msgcontent, a.readchk, a.senddate
+		FROM Message a, Member b
+		WHERE a.sendmno = #{mno} and a.takemno = b.mno and existsend = true
+		]]>
+	
+		<include refid="searchMsg"></include>
+		<![CDATA[
+		ORDER BY a.msgno DESC
+		limit #{cri.pageStart}, #{cri.number}
+		]]>
+	</select>
+	
+	<select id="sendMsgCountSearch" resultType="int">
+		SELECT count(msgno)
+		FROM Message a, Member b
+		Where a.sendmno = #{mno} and a.takemno = b.mno and existsend = true
+		<include refid="searchMsg"></include>
+	</select>
+	
+	<select id="takeMno" resultType="org.ict.domain.MemberVO">
+		SELECT mno, mname
+		FROM Member
+		WHERE mno != #{mno}
+	</select>
+	
+	<insert id="sendMsg">
+		INSERT INTO Message (sendmno, takemno, msgtitle, msgcontent)
+		VALUES (#{sendmno}, #{takemno}, #{msgtitle}, #{msgcontent})
+	</insert>
+	
+	<update id="deleteTakeMsg">
+		UPDATE Message
+		SET existtake = false, readchk = readchk + 1
+		WHERE msgno = #{msgno}
+	</update>
+	
+	<update id="deleteSendMsg">
+		UPDATE Message
+		SET existsend = false, readchk = readchk + 1
+		WHERE msgno = #{msgno}
+	</update>
+	
+	<select id="getTakeMsg" resultType="org.ict.domain.MessageVO">
+		SELECT a.msgno, a.msgtitle, a.msgcontent, b.mname, a.senddate 
+		FROM Message a, Member b
+		WHERE msgno = #{msgno} and a.sendmno = b.mno
+	</select>
+	
+	<select id="getSendMsg" resultType="org.ict.domain.MessageVO">
+		SELECT a.msgno, a.msgtitle, a.msgcontent, b.mname, a.senddate 
+		FROM Message a, Member b
+		WHERE msgno = #{msgno} and a.takemno = b.mno
+	</select>
+	
+	<update id="chkRead">
+		UPDATE Message
+		SET readchk = readchk + #{amount}
+		WHERE msgno = #{msgno}
+	</update>
+	
+	<select id="notReadMsg" resultType="int">
+		SELECT count(msgno) 
+		FROM message
+		WHERE takemno = #{mno} and readchk = 0
+	</select>
+	
+	<select id="notSignBoard" resultType="int">
+		SELECT count(bno)
+		FROM board
+		WHERE signstate = 0
+	</select>
+	
+	
+</mapper>

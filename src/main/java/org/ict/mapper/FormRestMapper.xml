@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.ict.mapper.FormRestMapper">
+	
+	<select id="formList" resultType="org.ict.domain.FormVO">
+		SELECT fno, fname, finfo, regdate, state
+		FROM Form
+		WHERE state = true
+	</select>
+	
+	<select id="formListPage" resultType="org.ict.domain.FormVO">
+		<![CDATA[
+			SELECT fno, fname, finfo, regdate, state
+			FROM Form
+			WHERE state = true
+			ORDER BY fno
+			limit #{pageStart} , #{number}
+		]]>
+	</select>
+	
+	<select id="formCount" resultType="Integer">
+		SELECT Count(fno)
+		FROM Form
+		WHERE state = true
+	</select>
+	
+	<select id="formListPageSearch" resultType="org.ict.domain.FormVO">
+		<![CDATA[
+			SELECT fno, fname, finfo, regdate, state
+			FROM Form
+			WHERE state = true
+			and fname like CONCAT('%', #{search.keyword}, '%')
+			ORDER BY fno
+			limit #{cri.pageStart} , #{cri.number}
+		]]>
+	</select>
+	
+	<select id="formCountSearch" resultType="Integer">
+		SELECT Count(fno)
+		FROM Form
+		WHERE state = true
+		and fname like CONCAT('%', #{keyword}, '%')
+	</select>
+	
+	<insert id="formInsert">
+		INSERT INTO Form (fname, finfo)
+		VALUES (#{fname}, #{finfo})
+	</insert>
+	
+	<update id="formUpdate">
+		UPDATE Form
+		SET fname = #{fname}, finfo = #{finfo}
+		WHERE fno = #{fno}
+	</update>
+	
+	<update id="formDelete">
+		UPDATE Form
+		SET state = false
+		WHERE fno = #{fno}
+	</update>
+	
+</mapper>

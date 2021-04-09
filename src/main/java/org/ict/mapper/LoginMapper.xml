@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ict.mapper.LoginMapper">
+	
+	<select id="login" resultType="org.ict.domain.MemberVO">
+		SELECT a.mno, a.mname, a.mpwd, a.memail, a.hiredate, a.deptno, b.deptname, a.position, a.mpnum, a.maddress, a.mbirth, a.gender, a.military, a.marry, a.vacachk, a.vacarem, a.state, a.manager, a.sessionkey, a.sessionlimit
+		FROM Member a, Dept b
+		WHERE a.mno = #{mno} and a.mpwd = #{mpwd} and a.deptno = b.deptno
+	</select>
+	
+	<update id="keepLogin">
+		UPDATE Member
+		SET sessionkey = #{sessionId},
+			sessionlimit = #{next}
+		WHERE mno = #{mno}
+	</update>
+	
+	<select id="checkUserWithSessionKey" resultType="org.ict.domain.MemberVO">
+		SELECT a.mno, a.mname, a.mpwd, a.memail, a.hiredate, a.deptno, b.deptname, a.position, a.mpnum, a.maddress, a.mbirth, a.gender, a.military, a.marry, a.vacachk, a.vacarem, a.state, a.manager, a.sessionkey, a.sessionlimit
+		FROM Member a, Dept b
+		WHERE a.sessionkey = #{value}
+		  AND a.sessionlimit > now() and a.deptno = b.deptno
+	</select>
+	
+</mapper>
