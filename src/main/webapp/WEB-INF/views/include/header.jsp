@@ -180,7 +180,7 @@
               </li>
               <li>
               <h3>
-                <a href="/sign/signStateList" id="newsBoard">
+                <a href="/sign/notSignList" id="newsBoard">
               
                                 </a>
               </h3>
@@ -244,7 +244,7 @@
                 <a href="/profile/myinfo"><i class="icon_profile"></i> My Profile</a>
               </li>
               <li>
-                <a href="/sign/signSuccessList"><i class="icofont-document-folder"></i> My Document</a>
+                <a href="/mymenu/mydocu?mno=${login.mno}"><i class="icofont-document-folder"></i> My Document</a>
               </li>
               <li>
                 <a href="/profile/messagebox"><i class="icofont-ui-messaging"></i>Message Box</a>

@@ -541,6 +541,21 @@
     
     <script type="text/javascript">
     $(document).ready(function() {
+    	function notReadMsg(){					
+	        $.getJSON("/message/alert/" + mno, function(data) {
+       			if (data === 0) {
+       				$("#news").html("새로운 소식이 없습니다.")
+       				$("#notChkMsg").html("");
+       				$("#newsDetail").html("쪽지함으로 이동")
+       			} else {
+       				$("#news").html("새로운 소식이 있습니다.")
+	       			$("#notChkMsg").html(data);
+       				$("#newsDetail").html("읽지 않은" + data + "개의 쪽지가 있습니다.");
+       			}
+       			
+       		});
+		}
+    	
     	var temppage1 = "";
     	var tempsearchType1 = "";
     	var tempkeyword1 = "";
@@ -998,6 +1013,7 @@
 					success : function(result) {
 						if(result == 'SUCCESS' && value === sendmsglist[sendmsglist.length-1])
 						alert("받은 쪽지가 삭제 되었습니다.");
+						notReadMsg();
 						$("body").attr("class", "");
 						$("#backdrop").remove();
 					    $("#delsendmsgmodal").attr("class", "modal fade");
@@ -1014,6 +1030,7 @@
 					}
 				});
 			});
+			notReadMsg();
 			
 		});
 		
@@ -1125,6 +1142,7 @@
 							getTakeListSearch(temppage1, tempsearchType1, tempkeyword1);
 							$("#takebasic").html("");
 						}
+					    notReadMsg();
 					}
 				});
 			});
@@ -1283,70 +1301,56 @@
 // 							+ $('input:radio[name=deptoption]').val();
 // 		})
 	
-		function notReadMsg(){					
-	        $.getJSON("/message/alert/" + mno, function(data) {
-       			if (data === 0) {
-       				$("#news").html("새로운 소식이 없습니다.")
-       				$("#notChkMsg").html("");
-       				$("#newsDetail").html("쪽지함으로 이동")
-       			} else {
-       				$("#news").html("새로운 소식이 있습니다.")
-	       			$("#notChkMsg").html(data);
-       				$("#newsDetail").html("읽지 않은" + data + "개의 쪽지가 있습니다.");
-       			}
-       			
-       		})
-		}
-		notReadMsg();
+	
 		
 		
-		$("td").on("click", "div button", function() {
+// 		$("td").on("click", "div button", function() {
 			
-			var a = $(this).data("dno");
+// 			var a = $(this).data("dno");
 			
-			var info = $(this).parent();
+// 			var info = $(this).parent();
 			
-			var dno = info.attr("data-dno");
+// 			var dno = info.attr("data-dno");
 			
-			var deptname = info.attr("data-dname");
+// 			var deptname = info.attr("data-dname");
 			
 			
-			if($(this).attr("id") == "mod" + a) {
+// 			if($(this).attr("id") == "mod" + a) {
 				
-				$("body").attr("class", "modal-open");
-			    $("body").append("<div id='backdrop' class='modal-backdrop fade show'>");
-			    $("#dnamemod").val(deptname);
-			    $("#hidemodify").val(a);
-			    $("#deptmodify").attr("class", "modal fade show");
-			    $("#deptmodify").attr("aria-modal", "true");
-			    $("#deptmodify").attr("aria-hidden", "false");
-			    $('#deptmodify').modal({backdrop: 'static'});
-			    $("#deptmodify").modal("show");
-			} else if ($(this).attr("id") == "del" + a) {
-				$("body").attr("class", "modal-open");
-			    $("body").append("<div id='backdrop' class='modal-backdrop fade show'>");
-			    $("#hideremove").val(a);
-			    $("#deptremove").attr("class", "modal fade show");
-			    $("#deptremove").attr("aria-modal", "true");
-			    $("#deptremove").attr("aria-hidden", "false");
-			    $('#deptremove').modal({backdrop: 'static'});
-			    $("#deptremove").modal("show");
-			}
+// 				$("body").attr("class", "modal-open");
+// 			    $("body").append("<div id='backdrop' class='modal-backdrop fade show'>");
+// 			    $("#dnamemod").val(deptname);
+// 			    $("#hidemodify").val(a);
+// 			    $("#deptmodify").attr("class", "modal fade show");
+// 			    $("#deptmodify").attr("aria-modal", "true");
+// 			    $("#deptmodify").attr("aria-hidden", "false");
+// 			    $('#deptmodify').modal({backdrop: 'static'});
+// 			    $("#deptmodify").modal("show");
+// 			} else if ($(this).attr("id") == "del" + a) {
+// 				$("body").attr("class", "modal-open");
+// 			    $("body").append("<div id='backdrop' class='modal-backdrop fade show'>");
+// 			    $("#hideremove").val(a);
+// 			    $("#deptremove").attr("class", "modal fade show");
+// 			    $("#deptremove").attr("aria-modal", "true");
+// 			    $("#deptremove").attr("aria-hidden", "false");
+// 			    $('#deptremove').modal({backdrop: 'static'});
+// 			    $("#deptremove").modal("show");
+// 			}
 			
-		})
+// 		})
 		
 	    	
-		$("#deptregbtnok").on("click", function() {
-			alert("새로운 부서가 등록되었습니다.")
-		});
+// 		$("#deptregbtnok").on("click", function() {
+// 			alert("새로운 부서가 등록되었습니다.")
+// 		});
 		
-		$("#deptmodbtnok").on("click", function() {
-			alert("부서명이 수정 되었습니다.")
-		});
+// 		$("#deptmodbtnok").on("click", function() {
+// 			alert("부서명이 수정 되었습니다.")
+// 		});
 		
-		$("#deptdelbtnok").on("click", function() {
-			alert("부서가 삭제 되었습니다.")
-		});
+// 		$("#deptdelbtnok").on("click", function() {
+// 			alert("부서가 삭제 되었습니다.")
+// 		});
 	    
 	    
 	});

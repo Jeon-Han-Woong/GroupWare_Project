@@ -74,17 +74,19 @@
                 상세보기
               </header>
               <br><br>
-              <form action="/sign/signSuccess" method="get">
+              <form action="/sign/signSuccess" id="formbtn" method="get">
               	<c:if test="${reportRead.signstate != 2}"> 
                      <c:if test="${login.position eq '과장' || login.position eq '부장' || login.position eq '차장'}">
-                     <div class="btn-group col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10">
-                     <button type="submit" class="btn btn-lg btn-danger signer signNo" ><i class="icofont-close-circled"></i></button>
-                     <button type="submit" class="btn btn-lg btn-primary signer signOk" ><i class="icofont-check-circled"></i></button>
-                     </div>
+                     
+	                     <div class="btn-group col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10" align="center" >
+	                     <button type="submit" class="btn btn-lg btn-danger signer signNo" id="signNo" > <i class="icofont-close-circled"></i></button>
+	                     <button type="submit" class="btn btn-lg btn-primary signer signOk" id="signOk" ><i class="icofont-check-circled"></i></button>
+	                     </div>
                      </c:if>
+                     <input type="hidden" name="mno" value="${login.mno }">
                      <input type="hidden" name="bsigner" value="${login.mname}">
-                     <input type="hidden" name="signstate" id="signstate" value="">
-                     <input type="hidden" name="bno" id="signstate" value="${reportRead.bno}">
+                     <input type="hidden" name="signstate" id="signstate">
+                     <input type="hidden" name="bno" value="${reportRead.bno}">
                  </c:if>   
                      </form>
               <div class="panel-body" >
@@ -110,7 +112,7 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-1 control-label"> 문서명</label>
+                    <label class="col-sm-1 control-label">제목</label>
                     <div class="col-sm-11">
                       <input type="text" class="form-control" readonly="true" value="${reportRead.btitle}">
                     </div>
@@ -174,7 +176,29 @@
        
               </div>
             
-         
+         <div class="modal fade" id="signmsgmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close closebtn" >&times;</button>
+                        <h4 class="modal-title">반려 사유</h4>
+                      </div>
+                      <div class="modal-body">
+                      <div class="form-group ">
+                        <label for="msgcontent" class="control-label col-md-2 col-lg-2">사유 작성</label>
+                        <div class="col-md-10 col-lg-10">
+                          <textarea class="form-control" id="msgcontent" name="msgcontent" required ></textarea>
+                        </div>
+                        <br><br>
+						</div>
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-primary btn-lg" id="signmsgbtn"><i class="icofont-checked"></i></button>
+                        <button class="btn btn-default closebtn btn-lg" type="button"><i class="icofont-exit"></i></button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
     	
         <!-- page end-->
       </section>
@@ -288,7 +312,12 @@
           }
         });
       });
-      
+    
+    var takemno = ${reportRead.mno};
+    var sendmno = ${login.mno};
+    var msgtitle = "";
+    var bno = ${reportRead.bno};
+    
 	$(".signOk").on("click", function(){
 		
 		$("#signstate").val("2");
@@ -307,6 +336,104 @@
 	        	
 	        	$("#titleForm").html('신청서');
         } 
+	});
+	
+	$("#signNo").on("click", function(e){
+		let result1 = confirm("결재를 반려하시겠습니까?");
+		
+		e.preventDefault();
+		if(result1) {
+			$("#signstate").val("1");
+			$("body").attr("class", "modal-open");
+		    $("body").append("<div id='backdrop' class='modal-backdrop fade show'>");
+		    $("#signmsgmodal").attr("class", "modal fade show");
+		    $("#signmsgmodal").attr("aria-modal", "true");
+		    $("#signmsgmodal").attr("aria-hidden", "false");
+		    $('#signmsgmodal').modal({backdrop: 'static'});
+		    $("#signmsgmodal").modal("show");
+		}
+		
+	});
+	
+	var msgcontent = "";
+	$("#signmsgbtn").on("click", function() {
+		msgtitle = "[${reportRead.fname}] 결재 반려";
+		var msgtemp = $("#msgcontent").val();
+		msgcontent = "문서 [${reportRead.btitle}]의 반려 사유 : " + msgtemp;
+		console.log(takemno);
+		console.log(sendmno);
+		console.log(msgtitle);
+		console.log(msgcontent);
+		$.ajax({
+			type : 'post',
+			url : '/message/sendmsg',
+			headers : {
+				"Content-Type" : "application/json",
+				"X-HTTP-Method-Override" : "POST"
+			},
+			dataType : 'text',
+			data : JSON.stringify({
+				takemno : takemno,
+				sendmno : sendmno,
+				msgtitle : msgtitle,
+				msgcontent : msgcontent
+			}),
+			success : function(result) {
+				if (result == 'SUCCESS'){
+					alert("반려 사유를 쪽지로 전송하였습니다.");
+					$("#formbtn").submit();
+// 					self.location = "/sign/signSuccess";
+				}
+			}
+		})
+		
+	})
+	
+	$(".closebtn").on("click", function() {
+			$("body").attr("class", "");
+			$("#backdrop").remove();
+		    $("#signmsgmodal").attr("class", "modal fade");
+		    $("#signmsgmodal").attr("aria-modal", "false");
+		    $("#signmsgmodal").attr("aria-hidden", "true");
+		    $("#signmsgmodal").modal("hide");
+	})
+	
+	
+	$("#signOk").on("click", function(e){
+		let result2 = confirm("결재하시겠습니까?");
+		e.preventDefault();
+		if(result2) {
+			$("#signstate").val("2");
+			msgcontent = "문서 [${reportRead.btitle}] 결재 완료했습니다.";
+			msgtitle = "[${reportRead.fname}] 결재 승인";
+			console.log(takemno);
+			console.log(sendmno);
+			console.log(msgtitle);
+			console.log(msgcontent);
+			$.ajax({
+				type : 'post',
+				url : '/message/sendmsg',
+				headers : {
+					"Content-Type" : "application/json",
+					"X-HTTP-Method-Override" : "POST"
+				},
+				dataType : 'text',
+				data : JSON.stringify({
+					takemno : takemno,
+					sendmno : sendmno,
+					msgtitle : msgtitle,
+					msgcontent : msgcontent
+				}),
+				success : function(result) {
+					if (result == 'SUCCESS'){
+						alert("결재 승인 쪽지를 전송하였습니다.");
+						$("#formbtn").submit();
+					}
+				}
+			})
+		}
+		
+		
 	});
     </script>
 

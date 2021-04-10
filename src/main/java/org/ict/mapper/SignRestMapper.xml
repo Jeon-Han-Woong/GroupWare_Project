@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="org.ict.mapper.SignRestMapper">
+	
+	<select id="waitListPage" resultType="org.ict.domain.BoardVO">
+	<![CDATA[
+	SELECT a.bno, c.deptname, a.btitle, b.mname, a.bwrite_date, a.bsigner, a.bsign_date, a.signstate
+	FROM Board a, Member b, Dept c
+	WHERE a.mno = b.mno and b.deptno = c.deptno and a.signstate < 2
+	ORDER BY a.signstate
+	limit #{pageStart}, #{number}
+	]]>
+	</select>
+	
+	<select id="waitCount" resultType="int">
+	<![CDATA[
+	SELECT count(bno)
+	FROM Board
+	WHERE signstate < 2
+	]]>
+	</select>
+	
+	<select id="waitListPageSearch" resultType="org.ict.domain.BoardVO">
+	<![CDATA[
+	SELECT a.bno, c.deptname, a.btitle, b.mname, a.bwrite_date, a.bsigner, a.bsign_date, a.signstate
+	FROM Board a, Member b, Dept c
+	WHERE a.mno = b.mno and b.deptno = c.deptno and a.signstate < 2
+	]]>
+		<if test="search.searchType != null">
+			<if test="search.searchType == 'd'.toString()">
+				and c.deptname like CONCAT('%', #{search.keyword}, '%')
+			</if>
+			<if test="search.searchType == 'n'.toString()">
+				and b.mname like CONCAT('%', #{search.keyword}, '%')
+			</if>
+			<if test="search.searchType == 't'.toString()">
+				and a.btitle like CONCAT('%', #{search.keyword}, '%')
+			</if>
+		</if>
+	<![CDATA[
+	ORDER BY a.signstate
+	limit #{cri.pageStart}, #{cri.number}
+	]]>
+	</select>
+	
+	<select id="waitCountSearch" resultType="int">
+	<![CDATA[
+	SELECT count(bno)
+	FROM Board a, Member b, Dept c
+	WHERE signstate < 2 and a.mno = b.mno and b.deptno = c.deptno
+	]]>
+	
+		<if test="searchType != null">
+			<if test="searchType == 'd'.toString()">
+				and c.deptname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 'n'.toString()">
+				and b.mname like CONCAT('%', #{keyword}, '%')
+			</if>
+			<if test="searchType == 't'.toString()">
+				and a.btitle like CONCAT('%', #{keyword}, '%')
+			</if>
+		</if>
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

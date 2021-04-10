@@ -135,5 +135,10 @@
 		WHERE signstate = 0
 	</select>
 	
+	<insert id="signMsg">
+		INSERT INTO Message (takemno, sendmno, msgtitle, msgcontent)
+		VALUES (#{takemno}, #{takemno}, #{msgtitle}, #{msgcontent})
+	</insert>
+	
 	
 </mapper>

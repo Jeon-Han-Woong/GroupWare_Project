@@ -183,7 +183,7 @@
                       </div>
                     </div>
                     <div class="form-group row">
-                        <button class="btn btn-primary btn-lg col-lg-1 col-lg-offset-4" type="submit"><i class="icofont-check-circled"></i></button>
+                        <button class="btn btn-primary btn-lg col-lg-1 col-lg-offset-4" id="submitbtn" type="submit"><i class="icofont-check-circled"></i></button>
                         <a href="/manage/perdetail?mno=${detail.mno}" class="btn btn-default btn-lg col-lg-1 col-lg-offset-1" type="button"><i class="icofont-close-circled"></i></a>
                     </div>
                   </form>
@@ -306,6 +306,20 @@
     	
     	$('#deptno').val(deptno).prop("selected", true);
 	});
+    
+    var formObj = $("form");
+	
+	$("#submitbtn").on("click", function(e) {
+		e.preventDefault();
+		
+		if (mpwd != $("#repwd").val()){
+			alert("비밀번호가 일치하지 않습니다!");
+			$("#repwd").focus();
+			return;
+		} else {
+			formObj.submit();
+		}
+	})
     </script>
 
 </body>

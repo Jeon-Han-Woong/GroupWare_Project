@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.ict.mapper.MydocuMapper">
+
+	<select id="docuListPage" resultType="org.ict.domain.BoardVO">
+		<![CDATA[
+		SELECT a.bno, b.fname,
+		a.btitle, a.bwrite_date, a.bsigner, a.bsign_date, a.signstate
+		FROM
+		board a, form b
+		WHERE a.mno = #{mno} and a.fno = b.fno
+		ORDER BY a.bno DESC
+		limit #{cri.pageStart}, #{cri.number}
+		]]>
+	</select>
+	
+	<select id="countPageNum" resultType="int">
+		<![CDATA[
+			SELECT COUNT(bno) FROM board WHERE bno > 0 and mno = #{mno}
+		]]>
+	</select>
+
+	<select id="docuListPageSearch" resultType="org.ict.domain.BoardVO">
+		<![CDATA[
+		SELECT a.bno, b.fname,
+		a.btitle, a.bwrite_date, a.bsigner, a.bsign_date, a.signstate
+		FROM
+		board a, form b
+		WHERE a.mno = #{mno} and a.fno = b.fno
+		]]>
+		<if test="search.searchType != null">
+			<if test="search.searchType == 'f'.toString()">
+				and b.fname like CONCAT('%', #{search.keyword}, '%')
+			</if>
+			<if test="search.searchType == 't'.toString()">
+				and a.btitle like CONCAT('%', #{search.keyword}, '%')
+			</if>
+		</if>
+		<![CDATA[
+		ORDER BY a.signstate DESC, a.bno
+		limit #{cri.pageStart}, #{cri.number}
+		]]>
+	</select>
+	
+	<select id="countPageNumSearch" resultType="int">
+		<![CDATA[
+			SELECT COUNT(bno) FROM board a, Form b WHERE bno > 0 and mno = #{mno} and a.fno = b.fno
+		]]>
+		<if test="search.searchType != null">
+			<if test="search.searchType == 'f'.toString()">
+				and b.fname like CONCAT('%', #{search.keyword}, '%')
+			</if>
+			<if test="search.searchType == 't'.toString()">
+				and a.btitle like CONCAT('%', #{search.keyword}, '%')
+			</if>
+		</if>
+	</select>
+	
+	
+
+	<select id="getList" resultType="org.ict.domain.BoardVO">
+		SELECT * FROM board WHERE bno >
+		0
+	</select>
+	<select id="read" resultType="org.ict.domain.BoardVO">
+		SELECT * FROM board WHERE bno =
+		#{bno}
+	</select>
+
+	<update id="update">
+		UPDATE board
+		SET
+		btitle = #{btitle},
+		bcontent =
+		#{bcontent}
+		WHERE
+		bno = #{bno}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM board WHERE bno = #{bno}
+	</delete>
+
+	<select id="listPage" resultType="org.ict.domain.BoardVO">
+		<![CDATA[
+			SELECT a.bno, b.fname, a.btitle, a.bwrite_date, a.bsigner, a.bsign_date, a.signstate
+			FROM board a, form b
+			WHERE a.mno = #{mno} and a.fno = b.fno
+		]]>
+		<include refid="search"></include>
+		<![CDATA[
+		ORDER BY a.bno DESC
+			limit #{cri.pageStart}, #{cri.number}
+		]]>
+	</select>
+
+		<sql id="search">
+		<if test="search.searchType != null">
+			<if test="search.searchType == 't'.toString()">
+				and btitle like CONCAT('%', #{search.keyword}, '%')
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and bcontent like CONCAT('%', #{search.keyword}, '%')
+			</if>
+		</if>
+	</sql>
+		
+<!-- 		<include refid="search"></include> -->
+			
+<!-- 		<![CDATA[				 -->
+<!-- 			ORDER BY a.bno DESC -->
+<!-- 			limit #{pageStart}, #{number} -->
+<!-- 		]]> -->
+
+
+</mapper>

@@ -155,7 +155,7 @@
         <div class="col-sm-6">
           <section class="panel">
             <header class="panel-heading">
-              <a href="/sign/signStateList">미결재 문서</a>
+              <a href="/mymenu/mydocu?mno=${login.mno }">미결재 문서</a>
             </header>
             <table class="table table-striped">
               <thead>

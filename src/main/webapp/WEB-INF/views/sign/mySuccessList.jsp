@@ -125,6 +125,7 @@
                 </thead>
                 <tbody>
                    <c:forEach items="${signStateListB}" var="list">
+<%--                 	<c:if test="${login.mno == list.mno}"> --%>
                   <tr>
                     <td class="text-center">${list.bno}</td>
                     <td class="text-center">${list.deptname}</td>
@@ -147,6 +148,7 @@
                     </c:choose>
                     </td>
                   </tr>
+<%--                   </c:if> --%>
                   </c:forEach>
                 </tbody>
               </table>
@@ -207,7 +209,7 @@
             <ul class="pagination justify-content-center">
         <c:if test="${pageMaker.prev}">
           <li class="page-item disabled">
-          	<a class="page-link" href="/sign/signSuccessList?page=${pageMaker.startPage -1}">
+          	<a class="page-link" href="/sign/mySuccessList?mno=${login.mno}&page=${pageMaker.startPage -1}">
           		&laquo;
           	</a>
           </li>
@@ -217,11 +219,11 @@
         			var ="idx">
         	<li class="page-item
         		<c:out value="${pageMaker.cri.page == idx ? 'active' : ''}" />">
-        			<a class="page-link" href="/sign/signSuccessList?page=${idx}&searchType=${cri.searchType}&keyword=${cri.keyword}">${idx}</a></li>			
+        			<a class="page-link" href="/sign/mySuccessList?mno=${login.mno}&page=${idx}&searchType=${cri.searchType}&keyword=${cri.keyword}">${idx}</a></li>			
         </c:forEach>
           <c:if test="${pageMaker.next && pageMaker.endPage > 0}">
           <li class="page-item">
-          	<a class="page-link" href="/sign/signSuccessList?page=${pageMaker.endPage +1}">
+          	<a class="page-link" href="/sign/mySuccessList?mno=${login.mno}&page=${pageMaker.endPage +1}">
           		&raquo;
           	</a>
           </li>
@@ -351,9 +353,10 @@
       
       $('#searchBtn').on("click", function(event){
     	  
-    	  self.location = "/sign/signSuccessList"
-    	  		+ "?page=1"
-    	  		+ "&searchType=" + $('input[name="searchType"]:checked').val()
+    	  self.location = "mySuccessList"
+    	  		+ "?mno=" + mno + "&page=1"
+    	  		+ "&searchType="
+    	  		+ $('input[name="searchType"]:checked').val()
     	  		+ "&keyword=" + $("#keywordInput").val();
       });
     </script>

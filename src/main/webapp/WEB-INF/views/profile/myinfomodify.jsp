@@ -313,6 +313,9 @@ var mno = ${login.mno};
     	$("#modifybtn").on("click", function(e) {
 			e.preventDefault();
 			
+			
+			
+			
 			var mpwd = $("#mpwd").val();
 			var memail = $("#memail").val();
 			var mpnum = $("#mpnum").val();
@@ -321,6 +324,12 @@ var mno = ${login.mno};
 			var military = $("#military").val();
 			var marry = $("#marry").val();
 			var vacachk = $("#vacachk").val();
+			
+			if (mpwd != $("#repwd").val()){
+				alert("비밀번호가 일치하지 않습니다!");
+				$("#repwd").focus();
+				return;
+			}
 			
 			console.log(mpwd);
 			console.log(memail);

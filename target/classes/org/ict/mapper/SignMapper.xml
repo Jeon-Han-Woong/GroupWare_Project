@@ -27,6 +27,21 @@
 			</if>
 		</if>
 	</sql>
+	<sql id = "searchSignSub"> <!-- 문서결재 search -->
+      <if test="cri.searchType != null">
+         <if test="cri.searchType == 'title'.toString()">
+            and btitle like CONCAT('%', #{cri.keyword}, '%')
+         </if>
+         <if test="cri.searchType == 'content'.toString()">
+            and bcontent like CONCAT('%', #{cri.keyword}, '%')
+         </if>
+         <if test="cri.searchType == 'writer'.toString()">
+            and mname like CONCAT('%', #{cri.keyword}, '%')
+         </if>
+         
+         
+      </if>
+   </sql>
 	<sql id = "searchNotice">
 		<if test="searchType != null">
 			<if test="searchType == 't'.toString()">
@@ -78,14 +93,67 @@
 				WHERE signstate = 2
 			]]>
 			
-			<include refid="searchSign"></include>
+			<if test="searchType != null">
+         <if test="searchType == 'title'.toString()">
+            and btitle like CONCAT('%', #{keyword}, '%')
+         </if>
+         <if test="searchType == 'content'.toString()">
+            and bcontent like CONCAT('%', #{keyword}, '%')
+         </if>
+         <if test="searchType == 'writer'.toString()">
+            and mname like CONCAT('%', #{keyword}, '%')
+         </if>
+         
+         
+      </if>
 			
 			<![CDATA[
 				ORDER BY bno DESC
 				limit #{pageStart}, #{number}
 			]]>
 	</select>
-	
+	<select id = "myWaitingList" resultType="org.ict.domain.BoardVO"> <!-- 결재 대기 문서 -->
+		<![CDATA[
+			SELECT bno, btitle, mname, bcontent, bwrite_date, bsigner, signstate, bsign_date, deptname, b.mno
+			FROM board a
+			JOIN member b ON b.mno = a.mno
+            JOIN dept c ON b.deptno = c.deptno
+			WHERE signstate < 2 and b.mno = #{mno}
+		]]>
+		
+		<include refid="searchSignSub"></include>
+		
+		<![CDATA[
+			ORDER BY bno DESC        
+         	limit #{cri.pageStart}, #{cri.number}
+        ]]>
+	</select>
+	<select id = "mySuccessList" resultType="org.ict.domain.BoardVO"> <!--  결재 완료 문서 -->
+			<![CDATA[
+				SELECT bno, btitle, mname, bcontent, bwrite_date, bsigner, signstate, bsign_date, deptname, b.mno
+				FROM board a
+				JOIN member b ON b.mno = a.mno
+	            JOIN dept c ON b.deptno = c.deptno
+				WHERE signstate = 2 and b.mno = #{mno}
+			]]>
+			
+			<include refid="searchSignSub"></include>
+			
+			<![CDATA[
+				ORDER BY bno DESC
+				limit #{pageStart}, #{number}
+			]]>
+	</select>
+	<select id="mySuccessCountPageNum" resultType="int"> <!-- 결재 완료 문서 count page  -->
+		SELECT count(bno) from board 
+		where 
+		signstate = 2 and mno = #{mno}; 
+	</select>
+	<select id="myWaitingCountPageNum" resultType="int"> <!-- 결재 대기 문서 count page  -->
+		SELECT count(bno) from board 
+		where 
+		signstate <![CDATA[<]]> 2 and mno = #{mno}; 
+	</select>
 	
 	
 	<select id = "reportRead" resultType="org.ict.domain.BoardVO">
@@ -101,16 +169,32 @@
 		values(#{fno}, #{btitle}, #{bcontent}, #{mno});
 	</insert>
 	
-	<select id="countPageNum" resultType="int"><!-- 결재보류 countPage  -->
-		SELECT count(bno) from board 
-		where 
-		signstate > 0; 
-	</select>
 	
-	<select id="countPageNum0" resultType="int"><!-- 결재완료 countPage  -->
+	
+	<select id="countPageNum" resultType="int">
 		SELECT count(bno) from board 
 		where 
 		signstate = 2; 
+	</select>
+	
+	<select id="countPageNum0" resultType="int"><!-- 결재완료 countPage  -->
+		SELECT count(bno) from board a, member b 
+		where 
+		signstate = 2 and a.mno = b.mno
+		<if test="searchType != null">
+         <if test="searchType == 'title'.toString()">
+            and a.btitle like CONCAT('%', #{keyword}, '%')
+         </if>
+         <if test="searchType == 'content'.toString()">
+            and a.bcontent like CONCAT('%', #{keyword}, '%')
+         </if>
+         <if test="searchType == 'writer'.toString()">
+            and b.mname like CONCAT('%', #{keyword}, '%')
+         </if>
+         
+         
+      </if>
+		
 	</select>
 	
 	<select id="deptSelect" resultType="org.ict.domain.DeptVO">

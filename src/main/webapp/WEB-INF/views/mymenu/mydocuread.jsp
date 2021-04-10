@@ -9,8 +9,8 @@
   <meta name="keyword" content="Creative, Dashboard, Admin, Template, Theme, Bootstrap, Responsive, Retina, Minimal">
   <link rel="shortcut icon" href="/resources/img/favicon.png">
 
-  <title>SIGN ME</title>
-<link rel="icon" type="image/png"  href="/resources/img/signmefavicon.png"/>
+  <title>Creative - Bootstrap Admin Template</title>
+
   <link rel="stylesheet" href="/resources/icofont/icofont.min.css">
   <!-- Bootstrap CSS -->
   <link href="/resources/css/bootstrap.min.css" rel="stylesheet">
@@ -56,89 +56,104 @@
  
  	<section id="main-content">
       <section class="wrapper">
-        <div class="row" style="width:1000px">
+        <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header"><Strong><i class="icofont-copy"></i>보고서 작성</Strong></h3>
+            <h3 class="page-header"><i class="fa fa-file-text-o"></i> Form elements</h3>
             <ol class="breadcrumb">
-              <li><i class="fa fa-home"></i><a href="/">메인</a></li>
-              <li><i class="icon_document_alt"></i>문서 작성</li>
-              <li><i class="icofont-copy"></i>보고서 작성</li>
+              <li><i class="fa fa-home"></i><a href="/">Home</a></li>
+              <li><i class="icon_document_alt"></i>내 문서 열람</li>
+              <li><i class="fa fa-file-text-o"></i>${board.btitle }</li>
             </ol>
           </div>
         </div>
-        <div class="row layer" style="position: static; width: 1000px">
+        <div class="row" style="position: static; width: 1000px">
           <div >
             <section class="panel">
               <header class="panel-heading">
-                문서기안
+                상세보기
               </header>
               <div class="panel-body" >
-                <form action="/sign/reportWrite" class="form-horizontal " method="post">
+                <form  class="form-horizontal" >
+                <input type="hidden" name="bno" value="${board.bno }">
+                <input type="hidden" name="searchType" value=${cri.searchType } />
+				<input type="hidden" name="keyword" value=${cri.keyword } />					   
+				<input type="hidden" name="page" value="${cri.page }">
+                
                   <!-- 추후 삭제 가능-->
-                  
+                  <div class="row" style="height:130px">
                     
-                    
+                    <div class="col-md-8">
+                    </div>
+                      
+                      <table style="border: 1px solid; width:300px" class="text-center">
+                        <tr style="border: 1px solid">
+                          <td><h4>${board.bsigner}</h4></td>
+                          <td style="border :1px solid"><h4>과장 홍길동</h4></td><!-- 조건에 따른 hide 구현 예정 -->
+                        </tr>
+                        <tr >
+                          <td style="height:100px; border :1px solid"></td>
+                          <td style="height:100px"></td>
+                        </tr>
+                      </table>
+                      
+                      
 
-                 
-				
-
+                    </div>
                   <div class="form-group">
-                    <h2 class="text-center">보고서 작성</h2>
+                    <h1 class="text-center">보고서</h1>
                     
                   </div>
+                
+                  <div class="form-group">
+                    <label class="col-sm-1 control-label">제목</label>
                   
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label"> 양식</label>
-                    <div class="col-sm-11">
-                      <div class="dropdown">
-					      <button type="button" class="btn btn-outline-info" data-toggle="dropdown">
-					        문서 양식을 선택하세요.
-					      </button>
-					      <div class="dropdown-menu">
-					        <a class="dropdown-item" href="#">보고서</a>
-					        <a class="dropdown-item" href="/sign/applicationWrite">신청서</a>
-					      </div>
-					    </div>
+                    <div class="col-sm-11 ">
+                      <input type="text" class="form-control" readonly="true"  value="${board.btitle}">
                     </div>
                   </div>
-                  <input type="hidden" name="fno" value="1">
                   <div class="form-group">
-                    <label class="col-sm-1 control-label"> 문서명</label>
-                    <div class="col-sm-11">
-                      <input type="text" class="form-control" id="btitle" name="btitle" >
+                    <label class="col-sm-1 control-label">부서명</label>
+                    <div class="col-sm-11 ">
+                      <input type="text" class="form-control"  readonly="true" value="영업지원팀"><!-- deptno 작성예정 -->
                     </div>
                   </div>
-                  
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label">작성자</label>
-                    <div class="col-sm-11">
-                      <input class="form-control" id="mno" type="text" name="mname" value="${login.mname}" readonly> <!-- readonly 예정 -->
-                    </div>
-                  </div>
-                  <input type="hidden" name="mno" value="${login.mno}">
+<!--                   <div class="form-group"> -->
+<!--                     <label class="col-sm-1 control-label"> 문서명</label> -->
+<!--                     <div class="col-sm-11"> -->
+<%--                       <input type="text" class="form-control" readonly="true" value="${board.fname}"> --%>
+<!--                     </div> -->
+<!--                   </div> -->
+<!--                   <div class="form-group"> -->
+<!--                     <label class="col-sm-1 control-label">작성자</label> -->
+<!--                     <div class="col-sm-11"> -->
+<%--                       <input class="form-control" id="focusedInput" type="text" readonly="true" value="${reportRead.mname}"> --%>
+<!--                     </div> -->
+<!--                   </div> -->
                   <div class="form-group">
                     <label class="col-sm-1 control-label">작성일</label>
                     <div class="col-sm-11">
-                      <input class="form-control" id="bwrite_date" name="bwrite_date" type="text" value="" readonly >
+                      <input class="form-control" id="disabledInput" type="text" readonly="true" value="${board.bwrite_date}">
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-1 control-label">수정일</label>
+                    <label class="col-sm-1 control-label">결재일자</label>
                     <div class="col-sm-11">
-                      <input type="text" class="form-control" readonly >
+                      <input type="text" class="form-control" readonly="true" value="${board.signstate}">
                     </div>
                   </div>
-                  <input type="hidden" id="fno" name="fno" value="1">
                   <div class="form-group">
                     <label class="col-sm-1 control-label">내용</label>
                     <div class="col-sm-11">
-                      <textarea class="form-control ckeditor" rows="6" id="bcontent" name="bcontent"></textarea>
+                      <textarea class="form-control" readonly="true" cols="30" rows="10">${board.bcontent}</textarea>
                     </div>
                   </div>
+                  <input type="hidden" id="signstate" value="${board.signstate}">
                   <div class="container">
                     <div class="row">
-                      <div class="col-sm-11"></div>
-                    <input type="submit" class="btn btn-primary col-sm-1" title="Bootstrap 3 themes generator" value="완료">
+                      <div class="col-sm-8"></div>
+                      <a class="btn btn-primary col-md-1" style="margin-right:5px; margin-left: 70px;" href="/mymenu/mydocu?page=${cri.page }&searchType=${cri.searchType}&keyword=${cri.keyword}" title="Bootstrap 3 themes generator">목록</a>
+                      <a class="btn btn-warning col-md-1 useboard" type="submit" style="margin-right:5px;" title="Bootstrap 3 themes generator" data-oper="modify">수정</a>
+                      <a class="btn btn-danger col-md-1 useboard" type="submit" data-oper="remove" title="Bootstrap 3 themes generator">삭제</a>
                   </div>
                   </div>
                 </form>
@@ -147,9 +162,9 @@
            
           </div>
         </div>
-      </div>
-
-      
+       
+              
+            
          
     
         <!-- page end-->
@@ -193,19 +208,18 @@
   <script src="/resources/js/owl.carousel.js"></script>
   <!-- jQuery full calendar -->
   <script src="/resources/js/fullcalendar.min.js"></script>
-    Full Google Calendar - Calendar
+    <!-- Full Google Calendar - Calendar -->
     <script src="/resources/assets/fullcalendar/fullcalendar/fullcalendar.js"></script>
-    script for this page only
+    <!--script for this page only-->
     <script src="/resources/js/calendar-custom.js"></script>
     <script src="/resources/js/jquery.rateit.min.js"></script>
-    custom select
+    <!-- custom select -->
     <script src="/resources/js/jquery.customSelect.min.js"></script>
     <script src="/resources/assets/chart-master/Chart.js"></script>
-	<!-- ck editor -->
-	<script src="//cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
-    custome script for all page
+
+    <!--custome script for all page-->
     <script src="/resources/js/scripts.js"></script>
-    custom script for this page
+    <!-- custom script for this page-->
     <script src="/resources/js/sparkline-chart.js"></script>
     <script src="/resources/js/easy-pie-chart.js"></script>
     <script src="/resources/js/jquery-jvectormap-1.2.2.min.js"></script>
@@ -262,23 +276,26 @@
           }
         });
       });
-      
-      $(document).ready(function(){
-    	  
-    	  var date = new Date();
-    	    var year = date.getFullYear();
-    	    var month = ("0" + (1 + date.getMonth())).slice(-2);
-    	    var day = ("0" + date.getDate()).slice(-2);
-    	    
-	      $("#bwrite_date").val(year + "-" + month + "-" + day);
-      });
-	
-      
-     
-     
-
     </script>
-
+<script type="text/javascript">
+$(document).ready(function() {
+	var formObj = $("form");
+	$('.useboard').on("click", function(e){
+		e.preventDefault();
+		
+		var operation = $(this).data("oper");
+		formObj.attr("method", "post");
+		
+		if(operation === "modify"){
+			formObj.attr("action", "/mymenu/mydocumodify");
+		} else if(operation ==="remove"){
+			formObj.attr("action","/mymenu/remove");
+			alert("삭제되었습니다.");
+		}
+		formObj.submit();
+	});
+}); // document
+</script>
 </body>
 
 </html>

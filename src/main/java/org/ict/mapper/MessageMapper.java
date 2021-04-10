@@ -45,4 +45,6 @@ public interface MessageMapper {
 	public int notReadMsg(Integer mno);
 	
 	public int notSignBoard(Integer mno);
+	
+	public void signMsg(MessageVO msg);
 }

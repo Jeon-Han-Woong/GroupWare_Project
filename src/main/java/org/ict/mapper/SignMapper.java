@@ -8,6 +8,7 @@ import org.ict.domain.Criteria;
 import org.ict.domain.DeptVO;
 import org.ict.domain.FormVO;
 import org.ict.domain.MemberVO;
+import org.apache.ibatis.annotations.Param;
 import org.ict.domain.BoardVO;
 
 public interface SignMapper {
@@ -16,6 +17,10 @@ public interface SignMapper {
 	
 	public List<BoardVO> signStateListB(SearchCriteria cri);
 	
+	public List<BoardVO> myWaitingList(@Param("cri")SearchCriteria cri, @Param("mno")int mno);
+	
+	public List<BoardVO> mySuccessList(@Param("cri")SearchCriteria cri, @Param("mno")int mno);
+	
 	public BoardVO reportRead(int bno);
 	
 	public void reportWrite(BoardVO board);
@@ -23,6 +28,11 @@ public interface SignMapper {
 	public int countPageNum(SearchCriteria cri);
 	
 	public int countPageNum0(SearchCriteria cri);
+	
+	public int myWaitingCountPageNum (SearchCriteria cri,@Param("mno") int mno);
+	
+	public int mySuccessCountPageNum (SearchCriteria cri,@Param("mno") int mno);
+	
 	
 	
 	

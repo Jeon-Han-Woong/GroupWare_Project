@@ -17,6 +17,14 @@ public interface SignService {
 	
 	public void reportWrite(BoardVO board);
 	
+	public List<BoardVO> myWaitingList(SearchCriteria cri, int mno);
+	
+	public List<BoardVO>  mySuccessList(SearchCriteria cri,  int mno);
+	
+	public int myWaitingCountPageNum (SearchCriteria cri, int mno);
+	
+	public int mySuccessCountPageNum (SearchCriteria cri, int mno);
+	
 	public List<BoardVO> getListCriteriaA(SearchCriteria cri);
 	
 	public List<BoardVO>  getListCriteriaB(SearchCriteria cri);

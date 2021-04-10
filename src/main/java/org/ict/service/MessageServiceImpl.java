@@ -100,5 +100,10 @@ public class MessageServiceImpl implements MessageService {
 		return mapper.notSignBoard(mno);
 	}
 
+	@Override
+	public void signMsg(MessageVO msg) {
+		mapper.sendMsg(msg);
+	}
+
 
 }

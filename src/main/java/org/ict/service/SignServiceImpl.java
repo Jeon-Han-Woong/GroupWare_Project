@@ -39,6 +39,19 @@ public class SignServiceImpl implements SignService{
 	}
 	
 	@Override
+	public List<BoardVO> myWaitingList(SearchCriteria cri, int mno) {
+		
+		return mapper.myWaitingList(cri, mno);
+	}
+	
+	@Override
+	public List<BoardVO> mySuccessList(SearchCriteria cri, int mno) {
+		
+		return mapper.mySuccessList(cri, mno);
+	}
+
+	
+	@Override
 	public List<BoardVO> getListCriteriaA(SearchCriteria cri) {
 		
 		return mapper.signStateListA(cri);
@@ -50,6 +63,16 @@ public class SignServiceImpl implements SignService{
 		return mapper.signStateListB(cri);
 	}
 
+	@Override
+	public int myWaitingCountPageNum(SearchCriteria cri, int mno) {
+		return mapper.myWaitingCountPageNum(cri, mno);
+	}
+
+	@Override
+	public int mySuccessCountPageNum(SearchCriteria cri, int mno) {
+		return mapper.mySuccessCountPageNum(cri, mno);
+	}
+	
 	@Override
 	public int getcountPage(SearchCriteria cri) {
 		

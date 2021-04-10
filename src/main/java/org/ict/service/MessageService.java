@@ -40,4 +40,6 @@ public interface MessageService {
 	public int notReadMsg(Integer mno);
 	
 	public int notSignBoard(Integer mno);
+	
+	public void signMsg(MessageVO msg);
 }

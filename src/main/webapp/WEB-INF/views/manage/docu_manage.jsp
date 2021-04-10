@@ -343,7 +343,7 @@
 		    			
 		    			str += "<tr data-bno='" + this.bno + "' class='text-center mybno' data-btitle='" + this.btitle + "' data-page='" + page + "'>"
 		    				+ "<td><input type='checkbox' name='boardchkbox' value='" + this.bno + "'></td>"
-		    				+ "<td>" + this.bno + "</td><td class='fname'>" + this.fname + "</td><td>" + this.btitle + "</td><td>" + this.mname + "</td><td>"
+		    				+ "<td>" + this.bno + "</td><td class='fname'>" + this.fname + "</td><td><a href='/sign/reportRead?bno=" + this.bno + "'>" + this.btitle + "</a></td><td>" + this.mname + "</td><td>"
 		    				+ formattedTime1 + "</td><td>" + this.bsigner + "</td><td>" + formattedTime2 + "</td>"
 		    				+ "</tr>";
 		    		});
@@ -408,7 +408,7 @@
 		    			
 		    			str += "<tr data-bno='" + this.bno + "' class='text-center mybno' data-btitle='" + this.btitle + "' data-page='" + page + "' data-searchType='" + page + "' data-keyword='" + keyword + "'>"
 		    				+ "<td><input type='checkbox' name='boardchkbox' value='" + this.bno + "'></td>"
-		    				+ "<td>" + this.bno + "</td><td class='fname'>" + this.fname + "</td><td>" + this.btitle + "</td><td>" + this.mname + "</td><td>"
+		    				+ "<td>" + this.bno + "</td><td class='fname'>" + this.fname + "</td><td><a href='/sign/reportRead?bno=" + this.bno + "'>" + this.btitle + "</a></td><td>" + this.mname + "</td><td>"
 		    				+ formattedTime1 + "</td><td>" + this.bsigner + "</td><td>" + formattedTime2 + "</td>"
 		    				+ "</tr>";
 		    		});
@@ -472,7 +472,7 @@
 		    			
 		    			str += "<tr data-nno='" + this.nno + "' class='text-center mynno' data-ntitle='" + this.ntitle + "'>"
 		    				+ "<td><input type='checkbox' name='noticechkbox' value='" + this.nno + "'></td>"
-		    				+ "<td>" + this.nno + "</td><td class='fname'>" + this.fname + "</td><td>" + this.ntitle + "</td><td>" + this.mname + "</td><td>"
+		    				+ "<td>" + this.nno + "</td><td class='fname'>" + this.fname + "</td><td><a href='/board/noticeRead?nno=" + this.nno + "'>" + this.ntitle + "</a></td><td>" + this.mname + "</td><td>"
 		    				+ formattedTime1 + "</td><td>"
 		    				+ "</tr>";
 		    		});
@@ -522,7 +522,7 @@
 		    			
 		    			str += "<tr data-nno='" + this.nno + "' class='text-center mynno' data-ntitle='" + this.ntitle + "'>"
 		    				+ "<td><input type='checkbox' name='noticechkbox' value='" + this.nno + "'></td>"
-		    				+ "<td>" + this.nno + "</td><td class='fname'>" + this.fname + "</td><td>" + this.ntitle + "</td><td>" + this.mname + "</td><td>"
+		    				+ "<td>" + this.nno + "</td><td class='fname'>" + this.fname + "</td><td><a href='/board/noticeRead?nno=" + this.nno + "'>" + this.ntitle + "</a></td><td>" + this.mname + "</td><td>"
 		    				+ formattedTime1 + "</td><td>"
 		    				+ "</tr>";
 		    		});

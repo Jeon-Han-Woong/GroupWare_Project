@@ -28,7 +28,11 @@ public class SignController {
 	private SignService service;
 	
 	
-	
+	@GetMapping("/notSignList")
+	public String notSignList() {
+		
+		return "/sign/notSignList";
+	}
 	
 	
 
@@ -47,7 +51,7 @@ public class SignController {
 		
 		service.reportWrite(board);
 		
-		return "redirect:/sign/signStateList";
+		return "redirect:/mymenu/mydocu?mno=" + board.getMno();
 	}
 	
 	@GetMapping("/reportWrite") // 보고서 작성 GET
@@ -109,9 +113,6 @@ public class SignController {
 	
 	@RequestMapping("/signSuccessList") // 문서 열람
 	public String signSuccessList(Model model, SearchCriteria cri) {
-		
-		
-		
 		model.addAttribute("signStateListB", service.getListCriteriaB(cri));
 		
 		model.addAttribute("cri", cri);
@@ -167,13 +168,54 @@ public class SignController {
 		
 		service.signSucceess(board);
 		
-		return "redirect:/sign/signStateList";
+		return "redirect:/sign/notSignList";
 	}
 	
 	@RequestMapping("/selectDoc")
 	public String selectDoc() {
 		
 		return "/sign/selectDoc";
+	}
+	
+	@RequestMapping("/mySuccessList")
+	public String mySuccessList(Model model, SearchCriteria cri, Integer mno) {
+		
+		model.addAttribute("mySuccessList", service.mySuccessList(cri, mno));
+		
+		
+		model.addAttribute("cri", cri);
+		
+		model.addAttribute("page", cri.getPage());
+		
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setCri(cri);
+		
+		pageMaker.setTotalCount(service.mySuccessCountPageNum(cri, mno));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "/sign/mySuccessList";
+	}
+	
+	@RequestMapping("/myWaitingList")
+	public String myWaitingList(Model model, SearchCriteria cri, Integer mno) {
+		
+		model.addAttribute("myWaitingList", service.myWaitingList(cri, mno));
+		
+		model.addAttribute("cri", cri);
+		
+		model.addAttribute("page", cri.getPage());
+		
+		PageMaker pageMaker = new PageMaker();
+		
+		pageMaker.setCri(cri);
+		
+		pageMaker.setTotalCount(service.myWaitingCountPageNum(cri, mno));
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
+		return "/sign/myWaitingList";
 	}
 	
 }
