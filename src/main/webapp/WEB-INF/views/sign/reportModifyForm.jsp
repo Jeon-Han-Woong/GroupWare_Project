@@ -139,9 +139,7 @@
                   <div class="form-group">
                     <label class="col-sm-1 control-label">내용</label>
                     <div class="col-sm-11">
-                      <textarea class="form-control" name = "bcontent" cols="30" rows="10">
-                       	
-                      </textarea>
+                      <textarea class="form-control" name = "bcontent" cols="30" rows="10"></textarea>
                     </div>
                   </div>
                   

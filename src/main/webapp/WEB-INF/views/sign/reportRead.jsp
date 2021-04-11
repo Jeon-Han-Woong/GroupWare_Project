@@ -94,6 +94,63 @@
                   <!-- 추후 삭제 가능-->
                   <br><br><br>
                  
+                        <c:choose>
+                        <c:when test="${reportRead.signstate == 1 }">
+                 <div class="row" style="height:130px">
+                    
+                    <div class="col-md-4 col-md-offset-4">
+                    </div>
+                      
+                      <table style="border:1px solid; width:300px; "class="text-center ">
+                        <thead>
+                        <tr>
+                    
+                        <th style="border:1px solid; width:50%"  class="text-center"><h4>반려일자</h4></th>
+                          <th style="border:1px solid; width:50%" class="text-center"><h4>반려결재자</h4></th><!-- 조건에 따른 hide 구현 예정 -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr >
+                          <td style="border:1px solid; height:100px">${reportRead.bsign_date }</td>
+                          <td style="border:1px solid; height:100px">${reportRead.bsigner}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      
+                      
+
+                    </div>
+                    </c:when>
+                    <c:when test="${reportRead.signstate == 0 || reportRead.signstate == 2}">
+                 <div class="row" style="height:130px">
+                    
+                    <div class="col-md-4 col-md-offset-4">
+                    </div>
+                      
+                      <table style="border:1px solid; width:300px; "class="text-center ">
+                        <thead>
+                        <tr>
+                    
+                        <th style="border:1px solid; width:50%"  class="text-center"><h4>결재일자</h4></th>
+                          <th style="border:1px solid; width:50%" class="text-center"><h4>결재자</h4></th><!-- 조건에 따른 hide 구현 예정 -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr >
+                          <td style="border:1px solid; height:100px">${reportRead.bsign_date }</td>
+                          <td style="border:1px solid; height:100px">${reportRead.bsigner}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      
+                      
+
+                    </div>
+                    </c:when>
+                        </c:choose>
+                 
+                 <br><br><br>
+                 
                   <div class="form-group">
                     <h1 class="text-center" id="titleForm">${reportRead.fname}</h1>
                     <br><br>
@@ -129,24 +186,22 @@
                       <input class="form-control" id="disabledInput" type="text" readonly="true" value="${reportRead.bwrite_date}">
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label">결재자</label>
-                    <div class="col-sm-11">
-                      <input type="text" class="form-control" readonly="true" value="${reportRead.bsigner}">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label class="col-sm-1 control-label">결재일자</label>
-                    <div class="col-sm-11">
-                      <input type="text" class="form-control" readonly="true" value="${reportRead.bsign_date}">
-                    </div>
-                  </div>
+<!--                   <div class="form-group"> -->
+<!--                     <label class="col-sm-1 control-label">결재자</label> -->
+<!--                     <div class="col-sm-11"> -->
+<%--                       <input type="text" class="form-control" readonly="true" value="${reportRead.bsigner}"> --%>
+<!--                     </div> -->
+<!--                   </div> -->
+<!--                   <div class="form-group"> -->
+<!--                     <label class="col-sm-1 control-label">결재일자</label> -->
+<!--                     <div class="col-sm-11"> -->
+<%--                       <input type="text" class="form-control" readonly="true" value="${reportRead.bsign_date}"> --%>
+<!--                     </div> -->
+<!--                   </div> -->
                   <div class="form-group">
                     <label class="col-sm-1 control-label">내용</label>
                     <div class="col-sm-11">
-                      <textarea class="form-control" readonly="true" cols="30" rows="10">
-                       	${reportRead.bcontent}
-                      </textarea>
+                      <textarea class="form-control" readonly="true" cols="30" rows="10">${reportRead.bcontent}</textarea>
                     </div>
                   </div>
                   <input type="hidden" id="signstate" value="${reportRead.signstate}">

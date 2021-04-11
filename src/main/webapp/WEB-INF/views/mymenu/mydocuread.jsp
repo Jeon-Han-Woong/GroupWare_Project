@@ -58,11 +58,11 @@
       <section class="wrapper">
         <div class="row">
           <div class="col-lg-12">
-            <h3 class="page-header"><i class="fa fa-file-text-o"></i> Form elements</h3>
+            <h3 class="page-header"><i class="fa fa-file-text-o"></i>문서 상세 보기</h3>
             <ol class="breadcrumb">
               <li><i class="fa fa-home"></i><a href="/">Home</a></li>
               <li><i class="icon_document_alt"></i>내 문서 열람</li>
-              <li><i class="fa fa-file-text-o"></i>${board.btitle }</li>
+              <li><i class="fa fa-file-text-o"></i>문서 상세 보기</li>
             </ol>
           </div>
         </div>
@@ -78,32 +78,71 @@
                 <input type="hidden" name="searchType" value=${cri.searchType } />
 				<input type="hidden" name="keyword" value=${cri.keyword } />					   
 				<input type="hidden" name="page" value="${cri.page }">
-                
+                <br><br>
                   <!-- 추후 삭제 가능-->
-                  <div class="row" style="height:130px">
+                  <c:choose>
+                        <c:when test="${board.signstate == 1 }">
+                 <div class="row" style="height:130px">
                     
-                    <div class="col-md-8">
+                    <div class="col-md-4 col-md-offset-4">
                     </div>
                       
-                      <table style="border: 1px solid; width:300px" class="text-center">
-                        <tr style="border: 1px solid">
-                          <td><h4>${board.bsigner}</h4></td>
-                          <td style="border :1px solid"><h4>과장 홍길동</h4></td><!-- 조건에 따른 hide 구현 예정 -->
+                      <table style="border:1px solid; width:300px; "class="text-center ">
+                        <thead>
+                        <tr>
+                    
+                        <th style="border:1px solid; width:50%"  class="text-center"><h4>반려일자</h4></th>
+                          <th style="border:1px solid; width:50%" class="text-center"><h4>반려결재자</h4></th><!-- 조건에 따른 hide 구현 예정 -->
                         </tr>
+                        </thead>
+                        <tbody>
                         <tr >
-                          <td style="height:100px; border :1px solid"></td>
-                          <td style="height:100px"></td>
+                          <td style="border:1px solid; height:100px">${board.bsign_date }</td>
+                          <td style="border:1px solid; height:100px">${board.bsigner}</td>
                         </tr>
+                        </tbody>
                       </table>
                       
                       
 
                     </div>
-                  <div class="form-group">
-                    <h1 class="text-center">보고서</h1>
+                    </c:when>
+                    <c:when test="${board.signstate == 0 || board.signstate == 2}">
+                 <div class="row" style="height:130px">
                     
-                  </div>
-                
+                    <div class="col-md-4 col-md-offset-4">
+                    </div>
+                      
+                      <table style="border:1px solid; width:300px; "class="text-center ">
+                        <thead>
+                        <tr>
+                    
+                        <th style="border:1px solid; width:50%"  class="text-center"><h4>결재일자</h4></th>
+                          <th style="border:1px solid; width:50%" class="text-center"><h4>결재자</h4></th><!-- 조건에 따른 hide 구현 예정 -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr >
+                          <td style="border:1px solid; height:100px">${board.bsign_date }</td>
+                          <td style="border:1px solid; height:100px">${board.bsigner}</td>
+                        </tr>
+                        </tbody>
+                      </table>
+                      
+                      
+
+                    </div>
+                    </c:when>
+                        </c:choose>
+                    <br>
+                    <br><br><br>
+                    
+               <div class="form-group">
+                    <h1 class="text-center">${board.fname}</h1>
+                    
+            		<br><br><br>
+               
+               </div>
                   <div class="form-group">
                     <label class="col-sm-1 control-label">제목</label>
                   
@@ -136,12 +175,6 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-1 control-label">결재일자</label>
-                    <div class="col-sm-11">
-                      <input type="text" class="form-control" readonly="true" value="${board.signstate}">
-                    </div>
-                  </div>
-                  <div class="form-group">
                     <label class="col-sm-1 control-label">내용</label>
                     <div class="col-sm-11">
                       <textarea class="form-control" readonly="true" cols="30" rows="10">${board.bcontent}</textarea>
@@ -151,9 +184,9 @@
                   <div class="container">
                     <div class="row">
                       <div class="col-sm-8"></div>
-                      <a class="btn btn-primary col-md-1" style="margin-right:5px; margin-left: 70px;" href="/mymenu/mydocu?page=${cri.page }&searchType=${cri.searchType}&keyword=${cri.keyword}" title="Bootstrap 3 themes generator">목록</a>
-                      <a class="btn btn-warning col-md-1 useboard" type="submit" style="margin-right:5px;" title="Bootstrap 3 themes generator" data-oper="modify">수정</a>
-                      <a class="btn btn-danger col-md-1 useboard" type="submit" data-oper="remove" title="Bootstrap 3 themes generator">삭제</a>
+                      <a class="btn btn-primary btn-lg col-md-1" style="margin-right:5px; margin-left: 70px;" href="/mymenu/mydocu?page=${cri.page }&searchType=${cri.searchType}&keyword=${cri.keyword}" title="Bootstrap 3 themes generator"><i class="icofont-list"></i></a>
+                      <a class="btn btn-success btn-lg col-md-1 useboard" type="submit" style="margin-right:5px;" title="Bootstrap 3 themes generator" data-oper="modify"><i class="icofont-edit"></i></a>
+                      <a class="btn btn-danger btn-lg col-md-1 useboard" type="submit" data-oper="remove" title="Bootstrap 3 themes generator"><i class="icofont-trash"></i></a>
                   </div>
                   </div>
                 </form>

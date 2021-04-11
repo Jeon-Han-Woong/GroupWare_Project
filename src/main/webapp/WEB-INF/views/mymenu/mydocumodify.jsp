@@ -78,26 +78,14 @@
                   <!-- 추후 삭제 가능-->
                   <div class="row" style="height:130px">
                     
-                    <div class="col-md-8">
-                    </div>
-                      
-                      <table style="border: 1px solid; width:300px" class="text-center">
-                        <tr style="border: 1px solid">
-                          <td><h4>${board.bsigner}</h4></td>
-                          <td style="border :1px solid"><h4>과장 홍길동</h4></td><!-- 조건에 따른 hide 구현 예정 -->
-                        </tr>
-                        <tr >
-                          <td style="height:100px; border :1px solid"></td>
-                          <td style="height:100px"></td>
-                        </tr>
-                      </table>
+                   
                       
                       
 
                     </div>
                   <div class="form-group">
                     <h1 class="text-center">보고서</h1>
-                    
+                    <br><br><br>
                   </div>
                 
                   <div class="form-group">
@@ -120,26 +108,18 @@
                     </div>
                   </div>
                   <div class="form-group">
-                    <label class="col-sm-1 control-label">결재일자</label>
-                    <div class="col-sm-11">
-                      <input type="text" class="form-control" readonly="true" value="${board.signstate}">
-                    </div>
-                  </div>
-                  <div class="form-group">
                     <label class="col-sm-1 control-label">내용</label>
                     <div class="col-sm-11">
-                      <textarea class="form-control"  name="bcontent" cols="30" rows="10">
-                      ${board.bcontent }
-                      </textarea>
+                      <textarea class="form-control"  name="bcontent" cols="30" rows="10">${board.bcontent }</textarea>
                     </div>
                   </div>
                   <input type="hidden" id="signstate" value="${board.signstate}">
                   <div class="container">
                     <div class="row">
-                      <div class="col-sm-8"></div>
+                      <div class="col-md-10"></div>
 						<input type="hidden" name="bno" value="${board.bno }"/>
-						<input type="submit" value="제출"  class="btn btn-primary">
-                      <a class="btn btn-danger"  href="/mymenu/mydocuread?bno=${board.bno  }" title="Bootstrap 3 themes generator">취소</a>
+						<button type="submit" class="btn btn-primary btn-lg"><i class="icofont-ui-check"></i></button>
+                      <a class="btn btn-danger btn-lg"  href="/mymenu/mydocuread?bno=${board.bno  }" title="Bootstrap 3 themes generator"><i class="icofont-close-circled"></i></a>
                   </div>
                   </div>
                 </form>

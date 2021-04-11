@@ -66,8 +66,7 @@
 		0
 	</select>
 	<select id="read" resultType="org.ict.domain.BoardVO">
-		SELECT * FROM board WHERE bno =
-		#{bno}
+		SELECT a.bno, b.fname, a.btitle, a.bcontent, a.bwrite_date, a.signstate, a.bsign_date, a.bsigner FROM board a, form b WHERE bno = #{bno} and a.fno = b.fno
 	</select>
 
 	<update id="update">
