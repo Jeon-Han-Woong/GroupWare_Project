@@ -288,7 +288,7 @@
 	var formObj = $("form");
     $(document).ready(function() {
     	
-var mno = ${login.mno};
+	var mno = ${login.mno};
 		
 		function getMyInfo(){
 			$.getJSON("/profileRest/" + mno, function(data) {
@@ -325,7 +325,11 @@ var mno = ${login.mno};
 			var marry = $("#marry").val();
 			var vacachk = $("#vacachk").val();
 			
-			if (mpwd != $("#repwd").val()){
+			if (mpwd == "") {
+				alert("비밀번호를 입력해 주세요!")
+				$("#mpwd").focus();
+				return;
+			} else if (mpwd != $("#repwd").val()){
 				alert("비밀번호가 일치하지 않습니다!");
 				$("#repwd").focus();
 				return;

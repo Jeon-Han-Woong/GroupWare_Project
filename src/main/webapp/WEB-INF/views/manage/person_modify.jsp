@@ -311,12 +311,18 @@
 	
 	$("#submitbtn").on("click", function(e) {
 		e.preventDefault();
-		
-		if (mpwd != $("#repwd").val()){
+		var mpwd = $("#mpwd").val();
+		var memname = $("#mname").val();
+		if (mpwd == "") {
+			alert("비밀번호를 입력해 주세요!")
+			$("#mpwd").focus();
+		}
+		else if (mpwd != $("#repwd").val()){
 			alert("비밀번호가 일치하지 않습니다!");
 			$("#repwd").focus();
 			return;
 		} else {
+			alert("사원 " + memname + "의 정보가 수정되었습니다.")
 			formObj.submit();
 		}
 	})

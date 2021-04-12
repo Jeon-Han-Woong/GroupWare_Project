@@ -17,7 +17,7 @@
               <li><a class="" href="/profile/messagebox">쪽지함</a></li>
             </ul>
           </li>
-          <c:if test="${login.position == '부장' || login.position == '차장' || login.position == '차장'}">
+          <c:if test="${login.position == '부장' || login.position == '차장' || login.position == '과장'}">
            <li>
             <a class="" href="/sign/notSignList">
                         <i class="icofont-livejournal"></i>
@@ -33,7 +33,7 @@
                       </a>
           </li>
           </c:if>
-          <c:if test="${login.position == '부장' || login.position == '차장' || login.position == '차장'}">
+          <c:if test="${login.position == '부장' || login.position == '차장' || login.position == '과장'}">
           <li class="sub-menu">
             <a href="javascript:;" class="">
                         <i class="icofont-letter"></i>

@@ -586,7 +586,7 @@
 				});
 				
 				if (boardnum.length == 0) {
-					alert("삭제할 쪽지를 선택해주세요.");
+					alert("삭제할 게시물을 선택해주세요.");
 				}
 				
 				
@@ -632,7 +632,7 @@
 				});
 				
 				if (noticenum.length == 0) {
-					alert("삭제할 쪽지를 선택해주세요.");
+					alert("삭제할 공지사항을 선택해주세요.");
 				}
 				
 				$.each(noticenum, function(index, value) {
@@ -647,6 +647,7 @@
 						success : function(result) {
 							console.log("result : " + result);
 							if(result == 'SUCCESS' && value === noticenum[noticenum.length-1]) {
+								alert("선택된 공지사항이 삭제 되었습니다.")
 								if (temppage2 == "" || tempsearchType2 == "" || tempkeyword2 == ""){
 									getNoticeList(temppage2)
 								} else {

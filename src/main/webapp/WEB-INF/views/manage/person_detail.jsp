@@ -101,7 +101,6 @@
                       <div class="col-lg-6">
                         <input class="form-control" id="hiredate" name="hiredate" type="date" value="${detail.hiredate}" readonly/>
                       </div>
-                      <label class="control-label col-lg-3">미선택 시, 등록일로 입력됩니다.</label>
                     </div>
                     <div class="form-group ">
                       <label for="deptname" class="control-label col-lg-1">부서 <span class="required"></span></label>

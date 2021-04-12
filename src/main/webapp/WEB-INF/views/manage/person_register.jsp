@@ -295,17 +295,54 @@
     
     <script type="text/javascript">
     	document.getElementById('hiredate').value = new Date().toISOString().substring(0, 10);
-    	
     	var formObj = $("form");
     	
     	$("#submitbtn").on("click", function(e) {
 			e.preventDefault();
+			var mpwd = $("#mpwd").val();
 			
-			if (mpwd != $("#repwd").val()){
+			if ($("#mname").val() == ""){
+				alert("이름을 입력해 주세요!");
+				$("#mname").focus();
+				return;
+			}
+			else if (mpwd == "") {
+				alert("비밀번호를 입력해 주세요!");
+				$("#mpwd").focus();
+				return;
+			}
+			else if (mpwd != $("#repwd").val()){
 				alert("비밀번호가 일치하지 않습니다!");
 				$("#repwd").focus();
 				return;
-			} else {
+			} 
+			else if ($("#memail").val() == "") {
+				alert("이메일을 입력해 주세요!");
+				$("#memail").focus();
+				return;
+			}
+			else if ($("#mpnum").val() == "") {
+				alert("연락처를 입력해 주세요!");
+				$("#mpnum").focus();
+				return;
+			}
+			else if ($("#maddress").val() == "") {
+				alert("주소를 입력해 주세요!");
+				$("#maddress").focus();
+				return;
+			}
+			else if ($("#mbirth").val() == "") {
+				alert("생년월일을 선택해 주세요!");
+				$("#mbirth").focus();
+				return;
+			}
+			else if ($("#vacarem").val() == "") {
+				alert("생년월일을 선택해 주세요!");
+				$("#vacarem").focus();
+				return;
+			}
+			else {
+				alert("새로운 사원이 등록되었습니다.")
 				formObj.submit();
 			}
 		})

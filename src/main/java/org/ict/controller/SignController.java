@@ -88,7 +88,7 @@ public class SignController {
 		
 		service.reportDelete(bno);
 		
-		return "redirect:/sign/signStateList";
+		return "redirect:/sign/signSuccessList";
 	}
 	
 	@PostMapping("/applicationWrite") // 신청서 작성 POST

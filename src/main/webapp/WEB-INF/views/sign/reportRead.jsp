@@ -77,11 +77,12 @@
               <form action="/sign/signSuccess" id="formbtn" method="get">
               	<c:if test="${reportRead.signstate != 2}"> 
                      <c:if test="${login.position eq '과장' || login.position eq '부장' || login.position eq '차장'}">
-                     
+                     	<c:if test="${login.mname != reportRead.mname }">
 	                     <div class="btn-group col-lg-2 col-lg-offset-10 col-md-2 col-md-offset-10" align="center" >
 	                     <button type="submit" class="btn btn-lg btn-danger signer signNo" id="signNo" > <i class="icofont-close-circled"></i></button>
 	                     <button type="submit" class="btn btn-lg btn-primary signer signOk" id="signOk" ><i class="icofont-check-circled"></i></button>
 	                     </div>
+	                    </c:if>
                      </c:if>
                      <input type="hidden" name="mno" value="${login.mno }">
                      <input type="hidden" name="bsigner" value="${login.mname}">

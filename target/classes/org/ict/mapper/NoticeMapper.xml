@@ -17,7 +17,7 @@
 	<update id="update">
 		UPDATE notice SET
 		ntitle = #{ntitle},
-		ncontent = #{ncontent},
+		ncontent = #{ncontent}
 		WHERE nno = #{nno}
 	</update>
 	
