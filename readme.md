@@ -1,12 +1,12 @@
-# SIGN ME
+# SIGN ME (Post)
 
-## GroupWare Project
+## GroupWare Project 
 
-#### 진행 내용 21/04/12 PM 13 : 20 :lantern:
+#### 사후 진행 내용 21/04/13 PM 11 : 32 :lantern:
 
-- 통합 완료.
+- 프로필 사진 업로드 까지 완료.
 
-- 버그 수정
+- DB 연결 및 CSS 작업 필요
 
   
 
