@@ -114,7 +114,19 @@
               
               <table class="table table-striped table-bordered">
                 <tr>
-                   <td rowspan=5 width="200px" height="250px"><img src="/resources/img/myprofileimg.png" width="100%" height="100%" alt="프로필"></TD>
+                   <td rowspan=5 width="200px" height="250px">
+                  
+                   <div class="uploadDiv">
+                   	<input type="file" name="uploadFile" multiple>
+                   </div>
+                   	<div id="uploadResult">
+                   		<ul>
+                   		
+                   		</ul>
+                   	</div>
+                   	<button id="uploadBtn">사진 변경</button>
+<!--                    <img src="/resources/img/myprofileimg.png" width="100%" height="100%" alt="프로필"> -->
+                   </td>
                    <td>사번</td>
                    <td id="mymno" data-mno="${login.mno}">${login.mno}</td>
                  </tr>
@@ -322,6 +334,71 @@
 			});
 			$("#boardbody").html(str);
 		})
+		
+		var regex = new RegExp("(.*?)\.(jpg|jpeg|png|PNG)$");
+		var maxSize = 5242880;
+		
+		function checkExtension(fileName, fileSize) {
+			if(fileSize >= maxSize) {
+				alert("파일사이즈 초과");
+				return false;
+			}
+			if(!regex.test(fileName)) {
+				alert("해당 종류의 파일은 업로드할 수 없습니다.");
+				return false;
+			}
+			return true;
+		}
+		
+		var cloneObj = $(".uploadDiv").clone();
+		
+		$("#uploadBtn").on("click", function(e) {
+			
+			var formData = new FormData();
+			
+			var inputFile = $("input[name='uploadFile']");
+			console.log("여기부터 업로드된 파일 체크");
+			console.log(inputFile);
+			console.log("여기부터 업로드된 파일 체크");
+			var files = inputFile[0].files;
+			
+			formData.append("uploadFile", files[0]);
+			
+			$.ajax({
+				url: '/uploadAjaxAction',
+				processData: false,
+				contentType: false,
+				data: formData,
+				type: 'POST',
+				dataType: 'json',
+				success: function(result) {
+					console.log(result);
+					
+					showUploadedFile(result);
+					
+					$(".uploadDiv").html(cloneObj.html());
+					
+				}
+				
+			});
+		});
+		
+		var uploadResult = $("#uploadResult ul");
+		
+		function showUploadedFile(uploadResultArr) {
+			var str = "";
+// 			str += "<li>" + uploadResultArr[0].fileName + "</li>";
+
+			var fileCallPath = encodeURIComponent(uploadResultArr[0].uploadPath
+					+ "/" + uploadResultArr[0].uuid + "_" + uploadResultArr[0].fileName);
+			
+			str += "<li><img src='/display?fileName=" + fileCallPath + "'></li>";
+	    	uploadResult.html(str);
+		};
+    
+	
+		
+		
 	});
     
     </script>
